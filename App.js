@@ -9,21 +9,14 @@ import {
 } from "react-native";
 
 import CoinItem from "./components/CoinItem";
-/*
-git init
-git status
-git add .
-git commit -m ""
-git log 00_00
-git tag
-git push origin master
-git push --tags
-*/
+import ListCriptos from "./components/ListCriptos";
 
 const App = () => {
   const [coins, setCoins] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState("");
+  const [selectedCoin, setSelectedCoin] = useState(null);
+  const [screen, setScreen] = useState("App");
 
   const loadData = async () => {
     const res = await fetch(
@@ -37,40 +30,58 @@ const App = () => {
     loadData();
   }, []);
 
+//Funcion para cuando clicke en una coin/cripto me redirija a sus datos en la pantalla ListCriptos
+  const handleCoinPress = (coin) => {
+    setSelectedCoin(coin);
+    setScreen("ListCriptos");
+  };
+
+  //Función para volver a App (lista criptomonedas)
+  const handleBackPress = () => {
+    setScreen('App');
+  };
+  
   return (
-    <View style={styles.container}>
+    <>
       <StatusBar backgroundColor="#141414" />
+      {screen === "App" && (
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.title}>CryptoMarket</Text>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search a Coin"
+              placeholderTextColor="#858585"
+              onChangeText={(text) => text && setSearch(text)}
+            />
+          </View>
 
-      <View style={styles.header}>
-        <Text style={styles.title}>CryptoMarket</Text>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search a Coin"
-          placeholderTextColor="#858585"
-          onChangeText={(text) => text && setSearch(text)}
-        />
-      </View>
-
-      <FlatList
-        style={styles.list}
-        data={coins.filter(
-          (coin) =>
-            coin.symbol.toLocaleLowerCase().includes("USDT".toLocaleLowerCase()) &&
-            coin.symbol.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-        )}
-        
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => <CoinItem coin={item} />}
-        refreshing={refreshing}
-        onRefresh={async () => {
-          setRefreshing(true);
-          await loadData();
-          setRefreshing(false);
-        }}
-      />
-    </View>
+          <FlatList
+            style={styles.list}
+            data={coins.filter(
+              (coin) =>
+                coin.symbol.toLowerCase().includes("usdt".toLowerCase()) &&
+                coin.symbol.toLowerCase().includes(search.toLowerCase())
+            )}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <CoinItem coin={item} onPress={() => handleCoinPress(item)} />
+            )}
+            refreshing={refreshing}
+            onRefresh={async () => {
+              setRefreshing(true);
+              await loadData();
+              setRefreshing(false);
+            }}
+          />
+        </View>
+      )}
+      {screen === "ListCriptos" && (
+        <ListCriptos coin={selectedCoin} setScreen={setScreen} handleBackPress={handleBackPress} />
+      )}
+    </>
   );
-};
+} 
 
 const styles = StyleSheet.create({
   container: {

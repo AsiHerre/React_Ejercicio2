@@ -1,14 +1,13 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-//  {coin.price_change_percentage_24h.toFixed(2)}%
-// {typeof coin.count === 'number' ? coin.count.toFixed(2) + '%' : 'N/A'}
+const CoinItem = ({ coin, onPress }) => {
 
-const CoinItem = ({ coin }) => {
   // Reemplazar "USDT" con una cadena vacía en el primer símbolo
   const firstSymbol = coin.symbol.replace('USDT', '');
 
   return (
+    <TouchableOpacity onPress={() => onPress()}>
     <View style={styles.containerItem}>
       <View style={styles.coinName}>
         <View style={styles.containerNames}>
@@ -30,6 +29,7 @@ const CoinItem = ({ coin }) => {
         </Text>
       </View>
     </View>
+    </TouchableOpacity>
   );
 };
 
@@ -41,36 +41,40 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  containerNames: {
-    marginLeft: 10,
-  },
+
   coinName: {
     flexDirection: "row",
   },
+
+  containerNames: {
+    marginLeft: 10,
+  },
+  
   text: {
     color: "#fff",
   },
-  textPrice: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  priceChangePercent: {
-    textAlign: "right",
-  },
-  priceUp: {
-    color: "#00B589",
-  },
-  priceDown: {
-    color: "#fc4422",
-  },
-  image: {
-    width: 30,
-    height: 30,
-  },
+
   textSymbol: {
     color: "#434343",
     textTransform: "uppercase",
   },
+
+  textPrice: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+
+  priceChangePercent: {
+    textAlign: "right",
+  },
+
+  priceUp: {
+    color: "#00B589",
+  },
+
+  priceDown: {
+    color: "#fc4422",
+  },  
 });
 
 export default CoinItem;
