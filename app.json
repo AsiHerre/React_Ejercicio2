@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "React_Ejercicio2",
-    "slug": "React_Ejercicio2",
+    "slug": "react-ejercicio2-criptomonedas",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.asizapi12.React_Ejercicio2"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d609b054-eb74-4162-9712-fe03c672cc81"
+      }
+    },
+    "owner": "asierh"
   }
 }
